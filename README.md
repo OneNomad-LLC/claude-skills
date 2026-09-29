@@ -1,66 +1,38 @@
-# craft
+# claude-skills
 
-A Claude Code plugin for designing and building premium web and app
-interfaces: marketing sites, web apps, mobile apps and desktop UI.
-
-Left alone, a coding model tends to produce the same interface every time. A
-default component kit, one sans-serif, an accent on everything, a centred hero
-over three cards, no pressed or empty states, a dark mode that's an inversion.
-craft gives Claude a process and a bar to work to, then makes it check the
-rendered result instead of trusting the source.
-
-## What it does
-
-1. **Brief.** A short interview covering who it's for, the one action that
-   matters, the brand assets that already exist, personality, how expressive
-   to be, and whether Claude writes the real copy.
-2. **Taste.** Claude finds 8 to 12 real sites or apps that fit the request and
-   screenshots them. You mark what you like and dislike in a local picker page,
-   and the recurring qualities go into the brief.
-3. **Tokens.** An OKLCH colour system taken from the brand, with light and dark
-   both designed and checked with APCA contrast, plus a type scale, spacing,
-   radii, elevation and motion.
-4. **Prototype.** The key screens in the real stack with mock data and every
-   state, for you to review before any production wiring.
-5. **Build.** Next.js + Tailwind (shadcn and Radix, restyled) or Expo/React
-   Native, following surface guides for marketing, web apps, mobile and desktop.
-6. **Verify.** Headless screenshots in every theme and viewport, with lint for
-   contrast, invisible focus, off-scale spacing, overflow, tap targets and more.
-   Then an interaction pass in your browser and a critic agent review.
-
-It also includes a scroll mode for landing pages told through scrolling:
-layered heroes, scroll-scrubbed video, and imagery generated through kie.ai.
+OneNomad's library of Claude Code skills, shipped as plugins from one
+marketplace.
 
 ## Install
 
 ```
-/plugin marketplace add OneNomad-LLC/craft
-/plugin install craft@craft
+/plugin marketplace add OneNomad-LLC/claude-skills
+/plugin install <plugin>@claude-skills
 ```
 
-Then ask for a design, or invoke the skill directly.
+## Plugins
 
-## Requirements
+| Plugin | What it does |
+|---|---|
+| [craft](plugins/craft) | Premium web and app design. Runs a brief interview and a taste picker built from real example sites, sets an OKLCH token system with designed light and dark themes, builds a prototype for review, then production code in Next.js + Tailwind or Expo. Checks the result with rendered screenshots, contrast and focus lint, and a critic agent. Includes a scroll-told landing page mode. |
 
-- Node 20 or later and npm. The scripts install Playwright and colorjs.io into
-  `~/.cache/craft-tools` the first time they run, so your project's
-  dependencies stay untouched. You can change that location with
-  `CRAFT_TOOLS_DIR`.
-- For generated imagery and video, a kie.ai API key in `KIE_AI_API_KEY`. Put
-  it in your shell environment or in a `.env` file your project ignores. See
-  `.env.example`.
-- For scroll-scrubbed video, a full ffmpeg build.
+## Adding a plugin
 
-`node skills/craft/scripts/doctor.mjs` shows what's installed.
+1. Create `plugins/<name>/.claude-plugin/plugin.json`, then put skills in
+   `plugins/<name>/skills/<skill>/SKILL.md` and agents in `plugins/<name>/agents/`.
+2. Add the plugin to `.claude-plugin/marketplace.json` with
+   `"source": "./plugins/<name>"`.
+3. Copy `LICENSE` into the plugin folder. Installs copy only that folder.
+   Third-party material needs its notice in the plugin's `NOTICE`.
+4. Bump `version` in both `plugin.json` and the marketplace entry for every
+   change you want installs to pick up. Claude Code caches each installed
+   version, so a new commit under the same version reaches nobody.
 
-## Development
-
-Commits pass through a pre-commit hook that runs gitleaks, or a pattern check
-if gitleaks isn't installed. Turn it on in a fresh clone with
-`git config core.hooksPath .githooks`.
+Secrets never go in this repo. Plugins read keys from the environment and
+document them in a `.env.example`. A pre-commit hook runs gitleaks, falling
+back to a pattern check when gitleaks isn't installed. In a fresh clone, turn
+it on with `git config core.hooksPath .githooks`.
 
 ## Licence
 
-Apache-2.0. The scroll module is adapted from
-[scroll-craft](https://github.com/nateherkai/scroll-craft) by Nate Herk
-(MIT). See `NOTICE` and `licenses/`.
+Apache-2.0, unless a plugin's `NOTICE` says a part of it comes from elsewhere.
