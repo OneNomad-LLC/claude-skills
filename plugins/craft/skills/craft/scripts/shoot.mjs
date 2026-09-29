@@ -26,7 +26,8 @@ const USAGE = `usage: node shoot.mjs <file|dir|url>... [options]
 
 Lints: horizontal overflow, icon blowouts, accessible names, broken images, clipped text,
 tap targets, console errors, external requests, text contrast (APCA and WCAG 2), focus
-visibility, off-scale spacing.
+visibility, off-scale spacing, em and en dashes in copy, wrapping buttons and nav links
+(1024px and up), duplicate button intents, eyebrow label overuse, 100vh heights.
 
 Steps file: [{"do":"click","selector":"text=Library"},{"do":"wait","ms":600},
   {"do":"type","selector":"#q","text":"water"},{"do":"press","key":"Enter"},
@@ -230,6 +231,126 @@ function collectPage({ minTarget, scale }) {
         if (off > 0.1) spacing.push({ selector: selectorOf(el), prop, value: raw, off });
       }
     }
+  }
+  // copy and layout lints that need no Node-side judging
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const wide = vw >= 1024;
+  const labelOf = (el) => (el.getAttribute("aria-label") || el.textContent || "").trim().replace(/\s+/g, " ");
+  const rowCount = (tops, tol) => {
+    let rows = 0;
+    let last = -Infinity;
+    for (const t of [...tops].sort((a, b) => a - b)) {
+      if (t - last > tol) rows++;
+      last = t;
+    }
+    return rows;
+  };
+
+  const dashWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let dashes = 0;
+  for (let n = dashWalker.nextNode(); n && dashes < 10; n = dashWalker.nextNode()) {
+    const at = n.nodeValue.search(/[–—]/);
+    const el = n.parentElement;
+    if (at < 0 || !el || el.closest("code, pre, script, style, [aria-hidden='true']") || !visible(el)) continue;
+    const excerpt = n.nodeValue.slice(Math.max(0, at - 20), at + 20).replace(/\s+/g, " ").trim();
+    problems.push({ level: "warn", rule: "em-dash", detail: `${selectorOf(el)} has a dash in "${excerpt}"` });
+    dashes++;
+  }
+
+  const buttonLike = (el) => {
+    if (el.matches("button, [role=button]")) return true;
+    if (el.tagName !== "A" || !el.hasAttribute("href") || !el.parentElement) return false;
+    const s = getComputedStyle(el);
+    const parentBg = getComputedStyle(el.parentElement).backgroundColor;
+    const filled = !transparent(s.backgroundColor) && s.backgroundColor !== parentBg;
+    const bordered = parseFloat(s.borderTopWidth) > 0 && s.borderTopStyle !== "none" && !transparent(s.borderTopColor);
+    const padded = Math.max(parseFloat(s.paddingTop), parseFloat(s.paddingLeft)) >= 6;
+    return padded && (filled || bordered);
+  };
+  const ctas = [...document.querySelectorAll("a[href], button, [role=button]")].filter((el) => visible(el) && buttonLike(el));
+
+  if (wide) {
+    for (const el of ctas) {
+      if (el.getBoundingClientRect().width > vw * 0.6) continue;
+      const tops = [];
+      const words = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      for (let t = words.nextNode(); t; t = words.nextNode()) {
+        if (!t.nodeValue.trim()) continue;
+        const range = document.createRange();
+        range.selectNodeContents(t);
+        for (const rect of range.getClientRects()) if (rect.width > 0) tops.push(rect.top);
+      }
+      const lines = rowCount(tops, 4);
+      if (lines > 1) problems.push({ level: "error", rule: "cta-wrap", detail: `${describe(el)} wraps onto ${lines} lines` });
+    }
+  }
+
+  const intents = {
+    contact: ["get in touch", "contact", "contact us", "lets talk", "talk to us", "reach out", "start a project", "work with us", "book a call"],
+    signup: ["get started", "start free", "try free", "try it free", "sign up", "sign up free", "start free trial", "create account", "join now", "join"],
+    demo: ["book a demo", "request a demo", "get a demo", "see a demo", "schedule a demo"],
+  };
+  const byIntent = {};
+  for (const el of ctas) {
+    const label = labelOf(el).toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, "").replace(/\s+/g, " ").trim();
+    const intent = Object.keys(intents).find((k) => intents[k].includes(label));
+    if (intent) (byIntent[intent] ||= new Set()).add(label);
+  }
+  for (const [intent, labels] of Object.entries(byIntent)) {
+    if (labels.size > 1) problems.push({ level: "warn", rule: "duplicate-cta-intent", detail: `${labels.size} different ${intent} buttons: ${[...labels].map((l) => `"${l}"`).join(", ")}` });
+  }
+
+  if (wide) {
+    for (const nav of document.querySelectorAll("nav, header [role=navigation]")) {
+      if (!visible(nav) || nav.getBoundingClientRect().height > vh * 0.5) continue;
+      const tops = [...nav.querySelectorAll("a, button")].filter(visible).map((el) => el.getBoundingClientRect().top);
+      const inRow = tops.some((t, i) => tops.some((u, j) => i !== j && Math.abs(t - u) <= 4));
+      const rows = rowCount(tops, 4);
+      if (inRow && rows > 1) problems.push({ level: "error", rule: "nav-wrap", detail: `${describe(nav)} links wrap onto ${rows} rows` });
+    }
+  }
+
+  const isEyebrow = (el) => {
+    if (!el || !visible(el)) return false;
+    const text = el.textContent.trim();
+    if (!text) return false;
+    const s = getComputedStyle(el);
+    const size = parseFloat(s.fontSize);
+    const caps = s.textTransform === "uppercase" || (/\p{L}/u.test(text) && text === text.toUpperCase());
+    return caps && size <= 14 && parseFloat(s.letterSpacing) / size >= 0.05;
+  };
+  const eyebrows = new Set();
+  for (const h of document.querySelectorAll("h1, h2")) {
+    if (!visible(h)) continue;
+    const first = h.parentElement && h.parentElement.firstElementChild;
+    const found = [h.previousElementSibling, first !== h ? first : null].find(isEyebrow);
+    if (found) eyebrows.add(found);
+  }
+  const sections = [...document.querySelectorAll("h2")].filter(visible).length + 1;
+  const allowed = Math.ceil(sections / 3);
+  if (eyebrows.size > allowed) problems.push({ level: "warn", rule: "eyebrow-count", detail: `${eyebrows.size} eyebrow labels over ${sections} sections, more than ${allowed} reads as a template` });
+
+  const fullHeight = new Set(document.querySelectorAll(".h-screen, .min-h-screen, [style*='100vh']"));
+  const scan = (rules) => {
+    for (const rule of rules) {
+      if (rule.media && !matchMedia(rule.media.mediaText).matches) continue;
+      if (rule.cssRules) scan(rule.cssRules);
+      const st = rule.style;
+      if (!st || !rule.selectorText || (st.height !== "100vh" && st.minHeight !== "100vh")) continue;
+      try { document.querySelectorAll(rule.selectorText).forEach((el) => fullHeight.add(el)); } catch {}
+    }
+  };
+  for (const sheet of document.styleSheets) {
+    try { scan(sheet.cssRules); } catch {}
+  }
+  let tall = 0;
+  for (const el of fullHeight) {
+    const h = el.getBoundingClientRect().height;
+    if (el === document.body || el === document.documentElement) continue;
+    if (tall >= 10 || !visible(el) || h <= vh * 0.9) continue;
+    problems.push({ level: "warn", rule: "viewport-height", detail: `${describe(el)} is ${Math.round(h)}px tall from 100vh, use 100dvh or 100svh so mobile browser bars don't push content off screen` });
+    tall++;
   }
   return { problems, texts, spacing };
 }
