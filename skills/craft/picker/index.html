@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Pick what feels right</title>
+<style>
+:root {
+  --bg: oklch(97.8% 0.003 250);
+  --surface: oklch(100% 0 0);
+  --surface-2: oklch(96% 0.004 250);
+  --border: oklch(90% 0.005 250);
+  --border-strong: oklch(82% 0.007 250);
+  --text: oklch(24% 0.01 255);
+  --muted: oklch(52% 0.012 255);
+  --accent: oklch(55% 0.17 262);
+  --accent-soft: oklch(94% 0.03 262);
+  --accent-text: oklch(99% 0 0);
+  --like: oklch(52% 0.13 155);
+  --like-soft: oklch(94.5% 0.04 155);
+  --dislike: oklch(54% 0.16 25);
+  --dislike-soft: oklch(95% 0.03 25);
+  --shadow: 0 1px 2px oklch(20% 0.02 255 / 0.06), 0 4px 16px oklch(20% 0.02 255 / 0.05);
+  --shadow-lift: 0 2px 4px oklch(20% 0.02 255 / 0.08), 0 12px 32px oklch(20% 0.02 255 / 0.10);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: oklch(17% 0.008 255);
+    --surface: oklch(21% 0.009 255);
+    --surface-2: oklch(25% 0.01 255);
+    --border: oklch(30% 0.01 255);
+    --border-strong: oklch(38% 0.012 255);
+    --text: oklch(94% 0.005 250);
+    --muted: oklch(70% 0.012 255);
+    --accent: oklch(72% 0.14 262);
+    --accent-soft: oklch(30% 0.06 262);
+    --accent-text: oklch(17% 0.01 262);
+    --like: oklch(76% 0.14 155);
+    --like-soft: oklch(28% 0.05 155);
+    --dislike: oklch(72% 0.15 25);
+    --dislike-soft: oklch(28% 0.05 25);
+    --shadow: 0 1px 2px oklch(0% 0 0 / 0.3), 0 4px 16px oklch(0% 0 0 / 0.25);
+    --shadow-lift: 0 2px 4px oklch(0% 0 0 / 0.4), 0 12px 32px oklch(0% 0 0 / 0.4);
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 15px/1.5 var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+header.top {
+  position: sticky; top: 0; z-index: 5;
+  background: color-mix(in oklch, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(1.4) blur(16px);
+  -webkit-backdrop-filter: saturate(1.4) blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding-block: 24px 20px; flex-wrap: wrap; }
+h1 { margin: 0 0 4px; font-size: 28px; line-height: 1.2; font-weight: 650; letter-spacing: -0.02em; }
+.lede { margin: 0; color: var(--muted); max-width: 56ch; }
+.progress { min-width: 200px; }
+.progress-label { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; margin-bottom: 8px; text-align: right; }
+.progress-label b { color: var(--text); font-weight: 600; }
+.bar { height: 4px; border-radius: 2px; background: var(--border); overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 2px; transition: width .25s ease; }
+
+main.wrap { padding-top: 32px; padding-bottom: 16px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.card:hover { box-shadow: var(--shadow-lift); }
+.card[data-verdict="like"] { border-color: color-mix(in oklch, var(--like) 55%, var(--border)); }
+.card[data-verdict="dislike"] { border-color: color-mix(in oklch, var(--dislike) 55%, var(--border)); }
+
+.shot {
+  position: relative; display: block; width: 100%; padding: 0; border: 0; cursor: zoom-in;
+  aspect-ratio: 16 / 10; background: var(--surface-2); overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.shot img.main { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+.shot .inset {
+  position: absolute; right: 12px; bottom: 12px; height: 46%; width: auto; aspect-ratio: 390 / 844;
+  object-fit: cover; object-position: top; border-radius: 10px;
+  border: 3px solid var(--surface); box-shadow: 0 4px 16px oklch(0% 0 0 / 0.25); background: var(--surface-2);
+}
+.shot .badge {
+  position: absolute; left: 12px; top: 12px; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px;
+  color: var(--accent-text); display: none;
+}
+.card[data-verdict="like"] .badge { display: block; background: var(--like); }
+.card[data-verdict="dislike"] .badge { display: block; background: var(--dislike); }
+.card[data-verdict="like"] .badge::before { content: "Liked"; }
+.card[data-verdict="dislike"] .badge::before { content: "Disliked"; }
+
+.empty {
+  aspect-ratio: 16 / 10; display: grid; place-items: center; text-align: center; padding: 16px;
+  background: var(--surface-2); border-bottom: 1px solid var(--border); color: var(--muted); font-size: 13px;
+}
+.empty strong { display: block; color: var(--text); font-weight: 600; margin-bottom: 2px; }
+
+.body { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.titlerow { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.title { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+.cat { font-size: 12px; color: var(--muted); background: var(--surface-2); border: 1px solid var(--border); padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.why { margin: 0; color: var(--muted); font-size: 14px; }
+
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+.vote {
+  min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 0 16px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 550;
+  background: var(--surface); border: 1px solid var(--border-strong);
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+.vote svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.vote:hover { background: var(--surface-2); }
+.vote[data-v="like"][aria-pressed="true"] { background: var(--like-soft); border-color: var(--like); color: var(--like); }
+.vote[data-v="dislike"][aria-pressed="true"] { background: var(--dislike-soft); border-color: var(--dislike); color: var(--dislike); }
+.note {
+  width: 100%; min-height: 44px; padding: 0 14px; border-radius: var(--radius-sm);
+  background: var(--surface-2); border: 1px solid transparent;
+}
+.note::placeholder { color: var(--muted); }
+.note:hover { border-color: var(--border); }
+.note:focus { background: var(--surface); border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+
+.finish { margin: 40px 0 64px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
+.finish h2 { margin: 0 0 4px; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+.finish p { margin: 0 0 16px; color: var(--muted); }
+.overall {
+  width: 100%; min-height: 112px; padding: 12px 14px; resize: vertical; line-height: 1.5;
+  background: var(--surface-2); border: 1px solid transparent; border-radius: var(--radius-sm);
+}
+.overall:focus { background: var(--surface); border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+.submitrow { display: flex; align-items: center; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+.submit {
+  min-height: 44px; padding: 0 24px; border: 0; border-radius: var(--radius-sm); cursor: pointer;
+  background: var(--accent); color: var(--accent-text); font-weight: 600;
+  transition: filter .15s ease, opacity .15s ease;
+}
+.submit:hover:not(:disabled) { filter: brightness(1.08); }
+.submit:disabled { opacity: .4; cursor: not-allowed; }
+.hint { color: var(--muted); font-size: 13px; }
+
+.done { display: none; min-height: 70vh; place-items: center; text-align: center; padding: 48px 24px; }
+.done .inner { max-width: 420px; }
+.done .tick { width: 56px; height: 56px; border-radius: 50%; background: var(--like-soft); color: var(--like); display: grid; place-items: center; margin: 0 auto 20px; }
+.done .tick svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.done h2 { margin: 0 0 8px; font-size: 26px; letter-spacing: -0.02em; }
+.done p { margin: 0; color: var(--muted); font-size: 16px; }
+body.is-done .page { display: none; }
+body.is-done .done { display: grid; }
+
+.lb { position: fixed; inset: 0; z-index: 20; display: none; flex-direction: column; background: oklch(12% 0.01 255 / 0.98); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: oklch(95% 0.005 250); }
+.lb.open { display: flex; }
+.lb-bar { display: flex; align-items: center; gap: 16px; padding: 12px 20px; flex-wrap: wrap; }
+.lb-title { font-weight: 600; margin-right: auto; }
+.lb-title small { font-weight: 400; color: oklch(72% 0.01 255); margin-left: 8px; }
+.seg { display: inline-flex; padding: 3px; gap: 2px; background: oklch(100% 0 0 / 0.08); border-radius: 10px; }
+.seg button { min-height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: transparent; cursor: pointer; color: oklch(80% 0.01 255); }
+.seg button[aria-pressed="true"] { background: oklch(100% 0 0 / 0.16); color: oklch(98% 0 0); }
+.seg button:disabled { opacity: .35; cursor: default; }
+.lb .vote { background: oklch(100% 0 0 / 0.08); border-color: oklch(100% 0 0 / 0.18); color: inherit; min-height: 44px; }
+.lb .vote:hover { background: oklch(100% 0 0 / 0.14); }
+.lb .vote[data-v="like"][aria-pressed="true"] { background: oklch(40% 0.08 155); border-color: oklch(76% 0.14 155); color: oklch(92% 0.08 155); }
+.lb .vote[data-v="dislike"][aria-pressed="true"] { background: oklch(40% 0.09 25); border-color: oklch(72% 0.15 25); color: oklch(92% 0.06 25); }
+.lb-x { min-width: 44px; min-height: 44px; border: 0; border-radius: 10px; background: oklch(100% 0 0 / 0.08); color: inherit; cursor: pointer; font-size: 20px; }
+.lb-x:hover { background: oklch(100% 0 0 / 0.14); }
+.lb-stage { flex: 1; min-height: 0; overflow: auto; display: flex; justify-content: center; align-items: flex-start; padding: 8px 20px 24px; }
+.lb-stage img { max-width: 100%; height: auto; display: block; border-radius: 8px; box-shadow: 0 8px 40px oklch(0% 0 0 / 0.5); }
+.lb-stage img.phone { max-width: 390px; }
+.lb-help { text-align: center; padding: 0 20px 14px; font-size: 12px; color: oklch(70% 0.01 255); }
+kbd { font: 500 11px var(--font); padding: 1px 6px; border-radius: 4px; background: oklch(100% 0 0 / 0.12); }
+
+@media (max-width: 720px) {
+  .wrap { padding: 0 16px; }
+  .head { padding: 16px 0; }
+  h1 { font-size: 22px; }
+  .progress { width: 100%; }
+  .progress-label { text-align: left; }
+  .grid { grid-template-columns: 1fr; gap: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <div class="wrap head">
+      <div>
+        <h1>Pick what feels right</h1>
+        <p class="lede">Mark what you like and what you don't. A short note on the specifics helps most.</p>
+      </div>
+      <div class="progress" role="status" aria-live="polite">
+        <div class="progress-label"><b id="rated">0</b> of <span id="total">0</span> rated</div>
+        <div class="bar"><i id="barfill"></i></div>
+      </div>
+    </div>
+  </header>
+  <main class="wrap">
+    <div class="grid" id="grid"></div>
+    <section class="finish">
+      <h2>Anything else?</h2>
+      <p>Anything the examples missed: a feeling, a competitor, a hard no.</p>
+      <textarea class="overall" id="overall" aria-label="Anything else?" placeholder="Optional"></textarea>
+      <div class="submitrow">
+        <button class="submit" id="submit" disabled>Submit picks</button>
+        <span class="hint" id="hint">Rate at least one card to submit.</span>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="done" role="status">
+  <div class="inner">
+    <div class="tick"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h2>Picks saved</h2>
+    <p>Go back to Claude. It has your picks and will carry on from there. You can close this tab.</p>
+  </div>
+</div>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Screenshot viewer">
+  <div class="lb-bar">
+    <div class="lb-title"><span id="lbtitle"></span><small id="lbpos"></small></div>
+    <div class="seg" id="lbtabs">
+      <button data-k="desktop" aria-pressed="true">Desktop</button>
+      <button data-k="full" aria-pressed="false">Full page</button>
+      <button data-k="phone" aria-pressed="false">Phone</button>
+    </div>
+    <button class="vote" data-v="like" aria-pressed="false" id="lblike">Like</button>
+    <button class="vote" data-v="dislike" aria-pressed="false" id="lbdislike">Dislike</button>
+    <button class="lb-x" id="lbclose" aria-label="Close">&times;</button>
+  </div>
+  <div class="lb-stage" id="lbstage"></div>
+  <div class="lb-help"><kbd>Esc</kbd> close &nbsp; <kbd>Left</kbd> <kbd>Right</kbd> move &nbsp; <kbd>L</kbd> like &nbsp; <kbd>D</kbd> dislike</div>
+</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const icons = {
+    like: '<svg viewBox="0 0 24 24"><path d="M7 11v9H4v-9h3zm0 0l4-8c1.5 0 2.5 1 2.5 2.5V9h5.2c1 0 1.7.9 1.5 1.9l-1.2 6.5c-.2 1-1 1.6-2 1.6H7"/></svg>',
+    dislike: '<svg viewBox="0 0 24 24"><path d="M7 13V4H4v9h3zm0 0l4 8c1.5 0 2.5-1 2.5-2.5V15h5.2c1 0 1.7-.9 1.5-1.9l-1.2-6.5c-.2-1-1-1.6-2-1.6H7"/></svg>'
+  };
+  const LS_KEY = "craft-picker:" + location.port;
+
+  let examples = [];
+  const state = {}; // id -> { verdict, note }
+  let overall = "";
+  let lbIndex = -1, lbKind = "desktop";
+
+  const get = (id) => state[id] || (state[id] = { verdict: null, note: "" });
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const src = (p) => (p ? encodeURI(p) : "");
+
+  function payload() {
+    return {
+      submittedAt: new Date().toISOString(),
+      picks: examples.map((e) => ({ id: e.id, title: e.title, url: e.url || null, verdict: get(e.id).verdict, note: get(e.id).note.trim() })),
+      overall: overall.trim()
+    };
+  }
+  const ratedCount = () => examples.filter((e) => get(e.id).verdict).length;
+
+  let saveTimer;
+  function changed() {
+    render();
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      const body = JSON.stringify(payload());
+      try { localStorage.setItem(LS_KEY, body); } catch {}
+      fetch("/progress", { method: "POST", headers: { "content-type": "application/json" }, body }).catch(() => {});
+    }, 500);
+  }
+
+  function render() {
+    const n = ratedCount();
+    $("rated").textContent = n;
+    $("total").textContent = examples.length;
+    $("barfill").style.width = examples.length ? (n / examples.length) * 100 + "%" : "0";
+    $("submit").disabled = n === 0;
+    $("hint").textContent = n === 0 ? "Rate at least one card to submit." : "Ready when you are.";
+    for (const e of examples) {
+      const card = document.querySelector('[data-id="' + CSS.escape(e.id) + '"]');
+      if (!card) continue;
+      const v = get(e.id).verdict;
+      card.dataset.verdict = v || "";
+      card.querySelectorAll(".vote").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === v)));
+    }
+    if (lbIndex >= 0) {
+      const v = get(examples[lbIndex].id).verdict;
+      $("lblike").setAttribute("aria-pressed", String(v === "like"));
+      $("lbdislike").setAttribute("aria-pressed", String(v === "dislike"));
+    }
+  }
+
+  function setVerdict(id, v) {
+    const s = get(id);
+    s.verdict = s.verdict === v ? null : v;
+    changed();
+  }
+
+  function build() {
+    const grid = $("grid");
+    grid.innerHTML = "";
+    examples.forEach((e, i) => {
+      const s = e.shots || {};
+      const card = document.createElement("article");
+      card.className = "card";
+      card.dataset.id = e.id;
+      const media = s.desktop && !e.error
+        ? '<button class="shot" data-open="' + i + '" aria-label="Enlarge ' + esc(e.title) + '">' +
+            '<img class="main" loading="lazy" alt="" src="' + esc(src(s.desktop)) + '">' +
+            (s.phone ? '<img class="inset" loading="lazy" alt="" src="' + esc(src(s.phone)) + '">' : "") +
+            '<span class="badge"></span></button>'
+        : '<div class="empty"><div><strong>Couldn’t capture</strong>You can still rate it from the name.</div></div>';
+      card.innerHTML = media +
+        '<div class="body">' +
+          '<div class="titlerow"><h2 class="title">' + esc(e.title || e.id) + '</h2>' + (e.category ? '<span class="cat">' + esc(e.category) + '</span>' : "") + '</div>' +
+          (e.why ? '<p class="why">' + esc(e.why) + '</p>' : "") +
+          '<div class="actions">' +
+            '<button class="vote" data-v="like" aria-pressed="false">' + icons.like + 'Like</button>' +
+            '<button class="vote" data-v="dislike" aria-pressed="false">' + icons.dislike + 'Dislike</button>' +
+          '</div>' +
+          '<input class="note" type="text" maxlength="500" placeholder="What specifically?" aria-label="Notes on ' + esc(e.title || e.id) + '">' +
+        '</div>';
+      const note = card.querySelector(".note");
+      note.value = get(e.id).note;
+      note.addEventListener("input", () => { get(e.id).note = note.value; changed(); });
+      card.querySelectorAll(".vote").forEach((b) => b.addEventListener("click", () => setVerdict(e.id, b.dataset.v)));
+      const open = card.querySelector("[data-open]");
+      if (open) open.addEventListener("click", () => openLb(i));
+      grid.appendChild(card);
+    });
+    $("overall").value = overall;
+    render();
+  }
+
+  function showLb() {
+    const e = examples[lbIndex];
+    const s = e.shots || {};
+    if (!s[lbKind]) lbKind = s.desktop ? "desktop" : s.full ? "full" : "phone";
+    $("lbtitle").textContent = e.title || e.id;
+    $("lbpos").textContent = lbIndex + 1 + " / " + examples.length;
+    $("lbtabs").querySelectorAll("button").forEach((b) => {
+      b.disabled = !s[b.dataset.k];
+      b.setAttribute("aria-pressed", String(b.dataset.k === lbKind));
+    });
+    const stage = $("lbstage");
+    stage.innerHTML = "";
+    stage.scrollTop = 0;
+    if (s[lbKind]) {
+      const img = document.createElement("img");
+      img.src = src(s[lbKind]);
+      img.alt = (e.title || e.id) + " " + lbKind;
+      if (lbKind === "phone") img.className = "phone";
+      stage.appendChild(img);
+    }
+    render();
+  }
+  function openLb(i) {
+    lbIndex = i; lbKind = "desktop";
+    $("lb").classList.add("open");
+    showLb();
+    $("lbclose").focus();
+  }
+  function closeLb() {
+    const i = lbIndex;
+    lbIndex = -1;
+    $("lb").classList.remove("open");
+    const btn = document.querySelector('[data-open="' + i + '"]');
+    if (btn) btn.focus();
+  }
+  function move(d) {
+    let i = lbIndex;
+    for (let n = 0; n < examples.length; n++) {
+      i = (i + d + examples.length) % examples.length;
+      if (examples[i].shots && examples[i].shots.desktop && !examples[i].error) { lbIndex = i; showLb(); return; }
+    }
+  }
+
+  $("lbclose").addEventListener("click", closeLb);
+  $("lb").addEventListener("click", (ev) => { if (ev.target.id === "lb" || ev.target.id === "lbstage") closeLb(); });
+  $("lbtabs").addEventListener("click", (ev) => {
+    const b = ev.target.closest("button");
+    if (b && !b.disabled) { lbKind = b.dataset.k; showLb(); }
+  });
+  $("lblike").addEventListener("click", () => setVerdict(examples[lbIndex].id, "like"));
+  $("lbdislike").addEventListener("click", () => setVerdict(examples[lbIndex].id, "dislike"));
+  document.addEventListener("keydown", (ev) => {
+    if (lbIndex < 0 || ev.metaKey || ev.ctrlKey || ev.altKey) return;
+    const k = ev.key.toLowerCase();
+    if (k === "escape") closeLb();
+    else if (k === "arrowright") move(1);
+    else if (k === "arrowleft") move(-1);
+    else if (k === "l") setVerdict(examples[lbIndex].id, "like");
+    else if (k === "d") setVerdict(examples[lbIndex].id, "dislike");
+    else return;
+    ev.preventDefault();
+  });
+
+  $("overall").addEventListener("input", (ev) => { overall = ev.target.value; changed(); });
+  $("submit").addEventListener("click", async () => {
+    const btn = $("submit");
+    btn.disabled = true;
+    btn.textContent = "Saving";
+    try {
+      const res = await fetch("/picks", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload()) });
+      if (!res.ok) throw new Error(String(res.status));
+      document.body.classList.add("is-done");
+      window.scrollTo(0, 0);
+    } catch {
+      btn.textContent = "Submit picks";
+      btn.disabled = false;
+      $("hint").textContent = "Couldn’t reach the local server. Try again.";
+    }
+  });
+
+  function restore(draft) {
+    if (!draft || !Array.isArray(draft.picks)) return;
+    for (const p of draft.picks) {
+      if (!p || !examples.some((e) => e.id === p.id)) continue;
+      state[p.id] = { verdict: p.verdict === "like" || p.verdict === "dislike" ? p.verdict : null, note: typeof p.note === "string" ? p.note : "" };
+    }
+    if (typeof draft.overall === "string") overall = draft.overall;
+  }
+
+  async function init() {
+    const res = await fetch("/examples.json");
+    examples = await res.json();
+    let draft = null;
+    try {
+      const r = await fetch("/draft");
+      if (r.ok) draft = await r.json();
+    } catch {}
+    if (!draft) {
+      try { draft = JSON.parse(localStorage.getItem(LS_KEY) || "null"); } catch {}
+    }
+    restore(draft);
+    build();
+  }
+  init().catch(() => { $("grid").textContent = "Couldn’t load the examples."; });
+})();
+</script>
+</body>
+</html>

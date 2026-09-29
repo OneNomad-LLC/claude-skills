@@ -1,0 +1,8 @@
+.env
+.env.*
+!.env.example
+node_modules/
+shots/
+craft-work/
+*.log
+.DS_Store

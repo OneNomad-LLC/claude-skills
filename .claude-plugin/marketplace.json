@@ -1,0 +1,14 @@
+{
+  "name": "craft",
+  "owner": { "name": "OneNomad LLC", "email": "matt@onenomad.dev" },
+  "metadata": { "description": "Premium web and app design for Claude Code", "version": "0.1.0", "pluginRoot": "." },
+  "plugins": [
+    {
+      "name": "craft",
+      "source": ".",
+      "description": "Premium web and app design for Claude Code: brief interview, taste picker, token system, prototype, production build and screenshot verification.",
+      "version": "0.1.0",
+      "keywords": ["design", "ui", "frontend", "landing-page", "design-system"]
+    }
+  ]
+}

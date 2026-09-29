@@ -1,0 +1,10 @@
+craft
+Copyright 2026 OneNomad LLC
+
+This product includes software and documentation adapted from scroll-craft
+(https://github.com/nateherkai/scroll-craft), Copyright (c) 2026 Nate Herk,
+licensed under the MIT License. See licenses/scroll-craft-MIT.txt.
+
+The adapted material is the scroll engine (skills/craft/engine), the scroll
+scripts (skills/craft/scripts/scroll-*, kie.mjs, encode.sh, serve.mjs,
+worldflight-assert.mjs) and the references under skills/craft/references/scroll.
