@@ -76,8 +76,8 @@ Primitives first, then one set of semantic tokens. Each colour is written once a
   --surface-overlay: light-dark(oklch(0.995 0.002 var(--brand-h)), var(--dk-3));
 
   --text-primary:   light-dark(var(--n-900), oklch(0.94 0.006 var(--brand-h)));
-  --text-secondary: light-dark(var(--n-600), oklch(0.76 0.010 var(--brand-h)));
-  --text-tertiary:  light-dark(var(--n-500), oklch(0.62 0.012 var(--brand-h)));
+  --text-secondary: light-dark(var(--n-600), oklch(0.84 0.010 var(--brand-h)));
+  --text-tertiary:  light-dark(var(--n-500), oklch(0.78 0.010 var(--brand-h)));
   --text-disabled:  light-dark(var(--n-400), oklch(0.48 0.010 var(--brand-h)));
   --text-on-accent: light-dark(var(--n-50), var(--dk-0));
 
@@ -240,7 +240,7 @@ const light = {
 
 const dark: Theme = {
   surfaceSunken: '#0b0e0c', surfaceBase: '#111512', surfaceRaised: '#181d19', surfaceOverlay: '#202621',
-  textPrimary: '#e8ece9', textSecondary: '#adb3ae', textTertiary: '#818883', textDisabled: '#5a5f5b',
+  textPrimary: '#e8ece9', textSecondary: '#c6ccc7', textTertiary: '#b3b9b4', textDisabled: '#5a5f5b',
   textOnAccent: '#0b0e0c', borderSubtle: '#272d29', borderStrong: '#3e443f',
   accent: '#6bc987', accentHover: '#82d79a', accentSubtle: '#0e2b18', focusRing: '#5ebc7b',
   critical: '#f47b74', criticalBg: '#331513',
