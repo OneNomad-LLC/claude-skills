@@ -192,6 +192,10 @@ Dark is designed. It is not `filter: invert()` and it is not the light theme wit
 - **Set text a little heavier and looser.** Light on dark reads thinner. Add a touch of line height and tracking, or one weight step. Typography.md covers the numbers.
 - **Re-check every pair.** Contrast changes direction. Secondary text that passed on light can fail on dark, and status text needs its own dark values (light foreground on a deep tinted background).
 
+## The reflex palettes
+
+Some palettes show up so often in generated work that they read as a default before anyone notices the brand. For premium consumer briefs (cookware, wellness, craft, home goods) it's warm cream or bone backgrounds with brass, clay or oxblood accents and espresso text. For software it's indigo to violet gradients on near-black. Neither is wrong when the brand really is those colours. When it isn't, start from the brand's own hue with the method above and pick a family that belongs to it: cold greys with one saturated accent, deep green with amber, off-black with tan, cobalt against a single neutral, rust against slate. Don't ship the same family on two projects in a row.
+
 ## Status colours
 
 Four jobs: ok, warn, critical, info. Each has a solid (icon, dot, fill), a `-bg` (banner or badge background), a `-fg` (text on that background) and a `-border`.

@@ -26,6 +26,11 @@ only inverted, missing states, icons at mismatched weights, awkward wraps and
 orphans, content that is obviously fake, anything that ignores the brief's
 taste notes.
 
+Read the visible copy in the screenshots too. Flag strings that are
+grammatically off, vague about what they refer to, trying to sound clever, or
+quoting numbers that look invented. For a redesign, the brief links an
+AUDIT.md; flag anything from its keep list that disappeared.
+
 Reply with at most 15 findings in three groups: **Must** (breaks the brief,
 accessibility or the build), **Should** (clearly weaker than the bar), **Nice**.
 Each finding names the screen, viewport and theme, what's wrong, and the fix,

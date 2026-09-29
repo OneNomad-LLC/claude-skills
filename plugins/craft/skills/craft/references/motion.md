@@ -211,6 +211,16 @@ In `motion`, wrap the app in `<MotionConfig reducedMotion="user">`. It disables 
 
 On React Native, read the setting with `AccessibilityInfo.isReduceMotionEnabled()` and subscribe to `reduceMotionChanged`, or use `useReducedMotion()` from Reanimated. Reanimated animations also accept `.reduceMotion(ReduceMotion.System)`. Test with the OS setting on. Video and Lottie loops need an explicit pause path.
 
+## Implementation traps
+
+- Never hold continuously changing values in React state: scroll position, pointer position, drag offsets. Every change re-renders the tree and it falls apart on phones. Use motion values (`useMotionValue`, `useTransform`, `useScroll` from `motion/react`), Reanimated shared values on native, or CSS custom properties written directly to the element.
+- No raw `window.addEventListener("scroll", ...)` driving animation. Use `useScroll`, IntersectionObserver, GSAP ScrollTrigger or CSS scroll-driven animations.
+- In the Next.js App Router, keep anything animated in a small client component (`"use client"`) at the leaf. Pages and layouts stay server components.
+- Every effect that starts an animation, observer or timeline cleans it up on unmount.
+- Grain and noise overlays go on one fixed, `pointer-events: none` layer, never on a scrolling container. Repainting a filter on scroll kills frame rate on phones.
+- One marquee per page at most, and only where breadth is the point (logos, a long list of capabilities). A second one is filler.
+- Full-height sections use `100dvh` or `100svh`, not `100vh`, which jumps as mobile browser toolbars show and hide.
+
 ## Performance
 
 - Stay on the compositor: transform, opacity, and where it fits, clip-path and filter. Check in DevTools Performance for layout and paint inside your animation frames. Any there means something is wrong.

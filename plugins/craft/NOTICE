@@ -8,3 +8,8 @@ licensed under the MIT License. See licenses/scroll-craft-MIT.txt.
 The adapted material is the scroll engine (skills/craft/engine), the scroll
 scripts (skills/craft/scripts/scroll-*, kie.mjs, encode.sh, serve.mjs,
 worldflight-assert.mjs) and the references under skills/craft/references/scroll.
+
+Parts of the redesign protocol, copy audit, marketing pattern notes and lint
+checks were informed by taste-skill (https://github.com/Leonxlnx/taste-skill),
+Copyright (c) 2026 Leonxlnx, licensed under the MIT License. They were rewritten for
+craft rather than copied.

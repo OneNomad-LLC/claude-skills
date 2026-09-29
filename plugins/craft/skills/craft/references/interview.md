@@ -9,6 +9,10 @@ Keep it short. Most people will answer eight good questions and resent twenty.
 - Before asking anything, read what you already have: the conversation, the
   repo (existing tokens, components, fonts, a brand folder, README), and any
   linked site. Don't ask what those already answer. Say what you found instead.
+- If `docs/SOW.md` exists (the blueprint skill writes it), read it and any
+  pre-filled `design/BRIEF.md` first. Roles, screens, states, content and
+  constraints are settled there; ask only about character, copy, motion and
+  taste.
 - Ask the subject open-ended. A made-up menu of industries or audiences biases
   the answer and reads as you deciding their business for them. Multiple choice
   is right for ranges and forks (how expressive, which platforms, copy or
@@ -74,6 +78,10 @@ from what you assumed, and proceed. Say so in the final report.
 
 Status: interviewed | self-authored under creative delegation
 Date: YYYY-MM-DD
+Mode: new | redesign (preserve) | redesign (overhaul) | rebrand
+
+Reading this as: <what it is> for <audience>, with a <character> language,
+leaning toward <stack and type direction>.
 
 ## What and who
 <their words>

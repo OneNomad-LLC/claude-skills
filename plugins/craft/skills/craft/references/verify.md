@@ -46,6 +46,11 @@ It writes one PNG per page, viewport and theme, a contact sheet per page, and
 | tap targets | Interactive elements under `--min-target` |
 | names, images | Missing accessible names, broken images |
 | console, network | Runtime errors, and requests that leave the machine |
+| em-dash | Em and en dashes in visible text (warning) |
+| cta-wrap, nav-wrap | A button label or the main navigation wrapping onto a second line at 1024px and wider |
+| duplicate-cta-intent | One action under several labels, like "Get in touch" and "Let's talk" (warning) |
+| eyebrow-count | Small uppercase labels above more than one section heading in three (warning) |
+| viewport-height | Full-height sections sized with 100vh, which jump on mobile browsers; use 100dvh or 100svh (warning) |
 
 When a screen is designed for one viewport only, render it at that viewport
 only, or overflow at the others is noise.
@@ -60,7 +65,23 @@ that looks like a template. Run the checklist at the end of
 
 "Looked, all good" on a first pass means you didn't look hard enough.
 
-## 4. Interact
+## 4. Read the copy
+
+Read every visible string on the rendered pages, top to bottom: headings,
+buttons, captions, alt text, empty states, errors, the footer. Rewrite anything
+that is:
+
+- grammatically off, or a phrase that sounds right and means nothing
+- vague about what it refers to ("we plan to keep it that way" with no "it")
+- trying to sound thoughtful: forced metaphors, mock-humble asides, poetic
+  labels on functional sections ("Field notes" for a blog)
+- a number that looks precise but came from nowhere
+
+If a string is doubtful, replace it with a plain sentence that says what the
+thing does. Cute copy that misses is worse than plain copy. This applies to
+placeholders too: realistic length, but still sensible.
+
+## 5. Interact
 
 Screenshots can't show hover, focus order, or how a flow feels. When Claude in
 Chrome is available, open the running app in a new tab of the user's browser
@@ -74,13 +95,13 @@ and:
 Don't resize the user's window; use `shoot.mjs` viewports for sizes. When Chrome
 isn't available, record the flow with `--video` instead and watch it.
 
-## 5. Critic pass
+## 6. Critic pass
 
 Spawn the `craft-critic` agent with the brief path, the contact sheet paths and
 `report.md`. It returns a must, should and nice list judged against the brief
 and the checklist. Fix the musts, most of the shoulds, and say which you left.
 
-## 6. Again
+## 7. Again
 
 Fix, render again, look again. Two rounds is normal. A third usually means the
 brief or the tokens were underspecified; fix them, not only the screen.

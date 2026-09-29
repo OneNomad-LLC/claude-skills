@@ -32,13 +32,18 @@ stopped.
 
 | Request | Do |
 |---|---|
-| New product, site, app or redesign | Every phase below |
+| New product, site or app | Every phase below |
+| Redesign of something live | [references/redesign.md](references/redesign.md) first (mode, audit, what never changes silently), then the phases below |
 | New screen or flow inside an existing design system | Short brief (job, states, data), reuse the existing tokens, prototype the screen, build, verify |
 | A component, a fix, "polish this" | No interview. Read the existing tokens and components, apply [fundamentals](references/fundamentals.md) and [components](references/components.md), verify |
 | A scroll-told landing page, cinematic hero, scroll-scrubbed video | Phases 1 to 3 here, then the scroll module: [scroll/README.md](references/scroll/README.md) |
 
 When the codebase already has a design system, it wins over your taste. Extend
-it, and say where it's weak instead of quietly forking it.
+it, and say where it's weak instead of quietly forking it. Some surfaces come
+with an official system that should be used as-is rather than imitated: Shopify
+admin (Polaris), Atlassian apps (Atlaskit), Microsoft 365 add-ins (Fluent), UK
+and US public-sector services (GOV.UK Frontend, USWDS). Install the real
+package; don't restyle it into something else.
 
 ## Phase 1: Brief
 
@@ -54,6 +59,11 @@ the real copy or uses realistic-length placeholders**; motion appetite.
 
 If the user explicitly hands over creative direction, write the brief yourself,
 mark it `Self-authored under creative delegation`, and keep going.
+
+Before moving on, write the design read as one line at the top of the brief
+and say it to the user: "Reading this as: <what it is> for <audience>, with a
+<character> language, leaning toward <stack and type direction>." If the user
+would correct it, now is the cheap time.
 
 Output: `design/BRIEF.md` in the project (create `design/` at the repo root).
 
@@ -137,12 +147,17 @@ Not optional. Procedure in [references/verify.md](references/verify.md):
 2. `shoot.mjs` across themes and viewports, plus `--reduced-motion`. It lints
    APCA and WCAG contrast, invisible focus, off-scale spacing, overflow, clipped
    text, icon blowouts, small tap targets, missing accessible names, broken
-   images, console errors and requests that leave the machine. Exit 1 means fix.
+   images, console errors, requests that leave the machine, em dashes in visible
+   text, wrapping buttons and navigation at desktop, one action under several
+   labels, too many eyebrow labels, and 100vh heroes. Exit 1 means fix.
 3. Open every contact sheet and look. Write down what's wrong before fixing it.
 4. Interaction pass in the user's real browser with Claude in Chrome when it's
    available: hover, Tab through focus order, the main flow end to end.
-5. Critic pass: spawn the `craft-critic` agent on the contact sheets and brief.
-6. Fix, render again, look again. Two rounds is normal.
+5. Copy audit: re-read every visible string (headings, buttons, captions, alt
+   text, errors) and rewrite anything grammatically off, vague about what it
+   refers to, or trying to sound clever. Plain beats cute.
+6. Critic pass: spawn the `craft-critic` agent on the contact sheets and brief.
+7. Fix, render again, look again. Two rounds is normal.
 
 Report what you verified and what you couldn't (a real phone, native gestures,
 haptics, a browser you don't have).

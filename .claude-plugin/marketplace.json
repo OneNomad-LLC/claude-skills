@@ -1,14 +1,38 @@
 {
   "name": "claude-skills",
-  "owner": { "name": "OneNomad LLC", "email": "matt@onenomad.dev" },
-  "metadata": { "description": "OneNomad's Claude Code skill library" },
+  "owner": {
+    "name": "OneNomad LLC",
+    "email": "matt@onenomad.dev"
+  },
+  "metadata": {
+    "description": "OneNomad's Claude Code skill library"
+  },
   "plugins": [
+    {
+      "name": "blueprint",
+      "source": "./plugins/blueprint",
+      "description": "Project onboarding: a natural interview with a coverage tracker that turns an app idea or an existing codebase into a full SOW, then hands off to design and build.",
+      "version": "0.1.0",
+      "keywords": [
+        "planning",
+        "scope",
+        "sow",
+        "requirements",
+        "onboarding"
+      ]
+    },
     {
       "name": "craft",
       "source": "./plugins/craft",
       "description": "Premium web and app design: brief interview, taste picker, token system, prototype, production build and screenshot verification.",
-      "version": "0.1.0",
-      "keywords": ["design", "ui", "frontend", "landing-page", "design-system"]
+      "version": "0.2.0",
+      "keywords": [
+        "design",
+        "ui",
+        "frontend",
+        "landing-page",
+        "design-system"
+      ]
     }
   ]
 }

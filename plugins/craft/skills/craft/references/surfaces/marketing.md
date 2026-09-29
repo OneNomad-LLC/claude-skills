@@ -56,6 +56,23 @@ Order of preference:
 
 Avoid stock-looking scenes: laughing people at laptops, floating gradient blobs with no reason to exist, 3D shapes unrelated to the product. If an image could sit on any company's site, it is doing no work.
 
+## Patterns that read as generated
+
+None of these is forbidden. Each is a pattern that shows up so often in generated pages that a visitor reads "template" before they read the words. Use one only when you can say what it does for this page.
+
+- **A hero doing too much.** The hero is one moment: at most a small label, the headline (two lines at desktop), a subline of about 20 words, and one primary plus one secondary action. Taglines under the buttons, trust strips, pricing teasers and avatar rows belong in the sections below. The whole hero, including the action, fits in the first viewport. If it doesn't, the type is too big or the copy is too long. Top padding past about 6rem makes the content float halfway down the screen.
+- **A label above every heading.** The small uppercase tracked label over each section title is the most repeated rhythm in generated sites. At most one section in three gets one. The heading usually says enough.
+- **Split section headers.** A big headline on the left with a small paragraph floating on the right, when the right column holds nothing else. Stack them instead, unless the right column carries a real visual.
+- **Layouts that repeat.** Three image-and-text sections alternating sides in a row, or the same layout family used for two sections. A page of eight sections wants at least four different layouts.
+- **Decoration that pretends to be information.** Section numbers (`01 / 06`), version tags in the hero (`v0.6`, `BETA`) when it isn't a launch, colored status dots that aren't a status, city, time or weather strips, photo credits on stock images, tags laid over photos, a strip of three words across the bottom of the hero (`BRAND. MOTION. SPATIAL.`), a sentence explaining the section under its heading.
+- **Poetic labels on functional sections.** "Field notes" for a blog, "Quietly trusted by" for customers, "Stage 1 / Stage 2" instead of the step's actual verb. Plain labels, or none.
+- **Fake product.** A dashboard, terminal or task list built from styled divs to look like a screenshot. Show the real product, a real component running in the page, a generated image, or photography.
+- **Grids that don't fit the content.** Bento grids with an empty cell, or six text-only cards on the same background. Shape the grid to the number of items, and give some cells real imagery.
+- **Lists as hairline tables.** Ten spec rows with a border under each. Group them, feature the three that matter, or give each a card with the value large.
+- **Scroll cues.** "Scroll to explore" and bouncing mouse icons. People know how to scroll.
+- **Logo walls with captions.** A logo wall is logos. Labels like "payments" under Stripe add nothing.
+- **Section themes that flip.** One light section in the middle of a dark page (or the reverse) feels like a different site, unless one deliberate theme change is part of the story.
+
 ## Social proof honesty
 
 Only show proof that exists. Real logos with permission, real quotes with a name, role and company, real numbers with a source or a date. If there is none yet, skip the section. An honest page with no logo strip is better than a decorated fake one. A specific small proof ("Used by the ops team at X since 2024") beats a wall of generic praise.

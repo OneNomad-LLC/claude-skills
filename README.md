@@ -14,7 +14,8 @@ marketplace.
 
 | Plugin | What it does |
 |---|---|
-| [craft](plugins/craft) | Premium web and app design. Runs a brief interview and a taste picker built from real example sites, sets an OKLCH token system with designed light and dark themes, builds a prototype for review, then production code in Next.js + Tailwind or Expo. Checks the result with rendered screenshots, contrast and focus lint, and a critic agent. Includes a scroll-told landing page mode. |
+| [blueprint](plugins/blueprint) | Project onboarding. Interviews you in normal conversation, with a coverage tracker and scope pushback, until it can write a full SOW (product definition and technical plan) for a new idea or an existing codebase. Hands off to craft, a build plan and a kickoff prompt. |
+| [craft](plugins/craft) | Premium web and app design. Runs a brief interview and a taste picker built from real example sites, sets an OKLCH token system with designed light and dark themes, builds a prototype for review, then production code in Next.js + Tailwind or Expo. Checks the result with rendered screenshots, lint and a critic agent. Handles redesigns of live sites without breaking URLs, SEO or tracking, and includes a scroll-told landing page mode. |
 
 ## Adding a plugin
 

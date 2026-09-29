@@ -44,6 +44,8 @@ Default tracking is tuned for text sizes. It is wrong at both ends.
 
 Tracking values change per face. Inter wants about -0.02em at 40px. Fraunces and other high-contrast serifs want less. Check the render and adjust.
 
+Italic display type with descenders (g, j, p, q, y) clips under a line height of 1 or less. Give italic display lines at least 1.1, or add a few pixels of bottom padding on the wrapper, and check every italic word in the render.
+
 ## Line height
 
 Line height falls as size rises, and rises with measure.
@@ -170,6 +172,8 @@ Fifteen starting points. All are free unless marked commercial. Google Fonts and
 **14. Erode and Switzer.** A soft, contemporary serif with real character over a clear neo-grotesque. *Fits:* premium consumer, luxury-adjacent, hotels, home and design. *Source:* Fontshare (ITF Free Font License).
 
 **15. Söhne and Tiempos Text.** The reference for Stripe-adjacent restraint (Söhne) and a considered reading serif (Tiempos). *Fits:* premium editorial software, financial and legal brands with budget. *Source:* Klim Type Foundry. **Commercial, optional.** Do not specify unless the client holds a licence. Geist plus Newsreader is the closest free equivalent.
+
+**The overused ones.** Instrument Serif and Fraunces are the display serifs models reach for first, and a serif headline has become the reflex for anything called "creative" or "premium". Both faces are good. Use them when you can say in a sentence why this brand wants this serif, and not because the brief said "editorial". Otherwise start from a sans display cut (Geist, Cabinet Grotesk, General Sans, Satoshi) and let size and tracking do the work. Don't use the same display face on two projects in a row. For emphasis inside a headline, use the italic or a heavier weight of the same family; dropping one word into a different typeface reads as a trick.
 
 Pairing rules that apply to all of them: contrast the two faces in structure (a serif with a sans, or a display cut with a text cut) and match them in x-height so they sit together. Two similar sans faces look like a mistake.
 
