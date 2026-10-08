@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#141821"/>
+      <stop offset="1" stop-color="#1f2533"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f2a65a"/>
+      <stop offset="1" stop-color="#e86a5a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="300" rx="20" fill="url(#bg)"/>
+  <g fill="none" stroke="#2c3446" stroke-width="1">
+    <path d="M0 75H1200M0 150H1200M0 225H1200"/>
+    <path d="M150 0V300M300 0V300M450 0V300M600 0V300M750 0V300M900 0V300M1050 0V300"/>
+  </g>
+  <rect x="80" y="104" width="10" height="92" rx="5" fill="url(#accent)"/>
+  <text x="112" y="160" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="64" font-weight="700" fill="#f4f1ea" letter-spacing="-1.5">claude-skills</text>
+  <text x="114" y="196" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22" fill="#a9b1c3">A small senior team for Claude Code, by OneNomad</text>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="17" fill="#c9cfdb">
+    <text x="760" y="112">/founder</text>
+    <text x="760" y="142">/blueprint</text>
+    <text x="760" y="172">/craft</text>
+    <text x="930" y="112">/napkin</text>
+    <text x="930" y="142">/pager</text>
+    <text x="930" y="172">/nitpick</text>
+  </g>
+  <rect x="760" y="196" width="300" height="2" rx="1" fill="url(#accent)" opacity="0.7"/>
+</svg>
