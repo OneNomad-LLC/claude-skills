@@ -35,6 +35,19 @@
       ]
     },
     {
+      "name": "founder",
+      "source": "./plugins/founder",
+      "description": "A founder for your agent teams: turns your vision into a vision doc and ambitious phase briefs on top of blueprint's SOW, collects the teams' questions, and works through every open detail with you.",
+      "version": "0.1.0",
+      "keywords": [
+        "planning",
+        "vision",
+        "product",
+        "agent-teams",
+        "briefs"
+      ]
+    },
+    {
       "name": "napkin",
       "source": "./plugins/napkin",
       "description": "Lazy senior architect mode, always on: the fewest components that meet the real requirements, sized for today's scale and written down with when to revisit.",
