@@ -33,6 +33,32 @@
         "landing-page",
         "design-system"
       ]
+    },
+    {
+      "name": "napkin",
+      "source": "./plugins/napkin",
+      "description": "Lazy senior architect mode, always on: the fewest components that meet the real requirements, sized for today's scale and written down with when to revisit.",
+      "version": "0.1.0",
+      "keywords": [
+        "architecture",
+        "system-design",
+        "data-model",
+        "adr",
+        "simplicity"
+      ]
+    },
+    {
+      "name": "pager",
+      "source": "./plugins/pager",
+      "description": "Lazy senior DevOps mode, always on: the fewest moving parts that fully solve the infrastructure task, with a verified rollout and a way back.",
+      "version": "0.1.0",
+      "keywords": [
+        "devops",
+        "infrastructure",
+        "ci",
+        "deployment",
+        "simplicity"
+      ]
     }
   ]
 }
