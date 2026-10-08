@@ -48,6 +48,19 @@
       ]
     },
     {
+      "name": "nitpick",
+      "source": "./plugins/nitpick",
+      "description": "Strict code review from an opinionated senior dev who nitpicks everything: readable names, clean organization, no repetition, reuse of existing helpers, mainstream libraries over niche ones.",
+      "version": "0.1.0",
+      "keywords": [
+        "code-review",
+        "review",
+        "readability",
+        "clean-code",
+        "dependencies"
+      ]
+    },
+    {
       "name": "pager",
       "source": "./plugins/pager",
       "description": "Lazy senior DevOps mode, always on: the fewest moving parts that fully solve the infrastructure task, with a verified rollout and a way back.",
