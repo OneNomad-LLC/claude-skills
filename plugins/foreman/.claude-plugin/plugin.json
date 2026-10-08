@@ -1,0 +1,19 @@
+{
+  "name": "foreman",
+  "version": "0.1.0",
+  "description": "Runs a build phase from blueprint's plan with parallel Sonnet workers in separate worktrees, merges into one integration branch with an Opus integrator for conflicts, and closes with a nitpick review.",
+  "author": {
+    "name": "OneNomad LLC",
+    "email": "matt@onenomad.dev"
+  },
+  "homepage": "https://github.com/OneNomad-LLC/claude-skills",
+  "repository": "https://github.com/OneNomad-LLC/claude-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "build",
+    "agent-teams",
+    "orchestration",
+    "worktrees",
+    "parallel"
+  ]
+}

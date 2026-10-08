@@ -21,6 +21,16 @@ What it holds the code to:
   alternative.
 - **Consistent.** The codebase's own conventions win over the reviewer's taste.
 
+A second reviewer runs at the same time and checks the change against its
+spec. It finds the spec on its own (a `--spec` path, ticket references in the
+commits, the build plan task and founder brief, a spec file, or the SOW's
+acceptance criteria) and lists each requirement as met, partly met, missing,
+added beyond the spec, or contradicted, with `file:line` evidence.
+
+The standards reviewer also checks for the classic smells from Martin Fowler's
+*Refactoring*: feature envy, data clumps, primitive obsession, shotgun surgery,
+speculative generality and the rest.
+
 It reviews only. Fixes happen after you say so.
 
 ```
@@ -29,10 +39,11 @@ It reviews only. Fixes happen after you say so.
 /nitpick main..HEAD      # a ref range
 /nitpick 123             # a GitHub PR
 /nitpick src/lib/date.ts # whole files
+/nitpick --spec docs/specs/checkout.md   # name the spec yourself
 ```
 
-The reviewer agent runs on Sonnet. Change `model` in
-`agents/nitpick.md` if you want a heavier reviewer.
+Both reviewer agents run on Sonnet. Change `model` in `agents/nitpick.md` and
+`agents/nitpick-spec.md` if you want heavier reviewers.
 
 ## Install
 

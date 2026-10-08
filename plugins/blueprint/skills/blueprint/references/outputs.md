@@ -124,15 +124,22 @@ marked `open: for craft` so the design interview asks only those.
 From SOW version <x>, YYYY-MM-DD
 
 ## Phase 1: <name>, ends with <something runnable>
-| # | Task | Files | Depends on | Done when |
-|---|---|---|---|---|
-| 1.1 | Schema and migrations for Booking, Slot | db/schema.ts, db/migrations/* | none | migration runs, types compile |
+| # | Task | Files | Blocked by | Seam | Done when |
+|---|---|---|---|---|---|
+| 1.1 | Schema and migrations for Booking, Slot | db/schema.ts, db/migrations/* | none | none | migration runs, types compile |
+| 1.2 | Slot availability query | src/booking/availability.ts | 1.1 | `getOpenSlots(cafeId, date)` | returns only unbooked slots, tested |
 ```
 
 Rules: each task is file-scoped and about 15 to 20 minutes of agent work, so
-several can run in parallel. Dependencies are explicit. Every phase ends in
-something the user can run or see. Design tasks come before the screens that
-need them. Tests sit with the task they test, not in a phase at the end.
+several can run in parallel. **Blocked by** lists the task numbers that must be
+merged first, or `none`; foreman runs every task whose blockers are done at the
+same time. Two tasks that aren't blocked by each other must not edit the same
+file, or their merges collide; if they must, make one block the other.
+**Seam** is the public interface the task's tests go through (a function, an
+endpoint, a component's props), or `none` for tasks with no logic to test;
+`/tdd` uses it instead of asking. Every phase ends in something the user can
+run or see. Design tasks come before the screens that need them. Tests sit with
+the task they test, not in a phase at the end.
 
 ## docs/blueprint/KICKOFF.md
 

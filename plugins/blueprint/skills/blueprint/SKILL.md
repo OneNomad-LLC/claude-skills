@@ -118,7 +118,8 @@ After the SOW is agreed, offer the next step:
   `docs/SOW.md` and skips what's already answered. Suggest starting it.
 - **Build plan.** Write `docs/blueprint/BUILD-PLAN.md`: tasks in dependency
   order, each file-scoped and about 15 to 20 minutes of agent work, grouped into
-  phases that end in something runnable.
+  phases that end in something runnable. Each task names what blocks it and the
+  seam its tests go through, so foreman can run independent tasks in parallel.
 - **Kickoff prompt.** If an app-build-prompt skill is available, invoke it and
   give it `docs/SOW.md` as the app description. Otherwise write
   `docs/blueprint/KICKOFF.md` from the template in outputs.md.

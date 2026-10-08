@@ -1,0 +1,4 @@
+foreman's approach, running a plan as a task graph with implementer agents in
+separate worktrees merging into one integration branch, was inspired by the
+implement-spec skill in Matt Pocock's skills (https://github.com/mattpocock/skills),
+MIT licence, Copyright (c) Matt Pocock. The text here is our own.

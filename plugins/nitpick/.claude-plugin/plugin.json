@@ -1,6 +1,6 @@
 {
   "name": "nitpick",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Strict code review from an opinionated senior dev who nitpicks everything: readable names, clean organization, no repetition, reuse of existing helpers, mainstream libraries over niche ones.",
   "author": {
     "name": "OneNomad LLC",
