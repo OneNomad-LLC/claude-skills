@@ -12,7 +12,7 @@
       "name": "blueprint",
       "source": "./plugins/blueprint",
       "description": "Project onboarding: a natural interview with a coverage tracker that turns an app idea or an existing codebase into a full SOW, then hands off to design and build.",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "keywords": [
         "planning",
         "scope",
@@ -32,6 +32,19 @@
         "frontend",
         "landing-page",
         "design-system"
+      ]
+    },
+    {
+      "name": "foreman",
+      "source": "./plugins/foreman",
+      "description": "Runs a build phase from blueprint's plan with parallel Sonnet workers in separate worktrees, merges into one integration branch with an Opus integrator for conflicts, and closes with a nitpick review.",
+      "version": "0.1.0",
+      "keywords": [
+        "build",
+        "agent-teams",
+        "orchestration",
+        "worktrees",
+        "parallel"
       ]
     },
     {
@@ -64,7 +77,7 @@
       "name": "nitpick",
       "source": "./plugins/nitpick",
       "description": "Strict code review from an opinionated senior dev who nitpicks everything: readable names, clean organization, no repetition, reuse of existing helpers, mainstream libraries over niche ones.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "keywords": [
         "code-review",
         "review",
@@ -84,6 +97,32 @@
         "ci",
         "deployment",
         "simplicity"
+      ]
+    },
+    {
+      "name": "proof",
+      "source": "./plugins/proof",
+      "description": "Two on-demand engineering disciplines: test-first red to green one slice at a time, and a gated loop for diagnosing hard bugs and performance regressions.",
+      "version": "0.1.0",
+      "keywords": [
+        "tdd",
+        "testing",
+        "debugging",
+        "regression",
+        "performance"
+      ]
+    },
+    {
+      "name": "trim",
+      "source": "./plugins/trim",
+      "description": "Lazy senior developer mode, always on: the smallest complete change that solves the task, with every deliberate shortcut marked and its limit written down.",
+      "version": "0.1.0",
+      "keywords": [
+        "code",
+        "simplicity",
+        "yagni",
+        "refactoring",
+        "audit"
       ]
     }
   ]

@@ -6,7 +6,9 @@ This guide covers installing the plugins, what each one does day to day, and how
 - [founder](#founder)
 - [blueprint](#blueprint)
 - [craft](#craft)
-- [napkin and pager](#napkin-and-pager)
+- [foreman](#foreman)
+- [proof](#proof)
+- [trim, napkin and pager](#trim-napkin-and-pager)
 - [nitpick](#nitpick)
 - [A full project, start to finish](#a-full-project-start-to-finish)
 - [Updating and removing](#updating-and-removing)
@@ -21,6 +23,9 @@ In Claude Code:
 /plugin install founder@claude-skills
 /plugin install blueprint@claude-skills
 /plugin install craft@claude-skills
+/plugin install foreman@claude-skills
+/plugin install proof@claude-skills
+/plugin install trim@claude-skills
 /plugin install napkin@claude-skills
 /plugin install pager@claude-skills
 /plugin install nitpick@claude-skills
@@ -28,9 +33,9 @@ In Claude Code:
 
 Or from a terminal, with `claude plugin marketplace add` and `claude plugin install` and the same arguments. Restart Claude Code afterwards.
 
-Install only what you'll use. founder needs blueprint. The others stand alone.
+Install only what you'll use. founder and foreman need blueprint, because they work from its SOW and build plan. The others stand alone. trim replaces [ponytail](https://github.com/DietrichGebert/ponytail), so don't install both.
 
-**Requirements.** napkin and pager run small Node hooks, so `node` must be on the PATH Claude Code uses for hooks. craft needs Node 20 or later. Its scripts install Playwright into `~/.cache/craft-tools` the first time they run.
+**Requirements.** trim, napkin and pager run small Node hooks, so `node` must be on the PATH Claude Code uses for hooks. craft needs Node 20 or later. Its scripts install Playwright into `~/.cache/craft-tools` the first time they run.
 
 **More than one Claude account on a machine.** Each config directory has its own plugins. If you run a second account with `CLAUDE_CONFIG_DIR=~/.claude-work`, install there too:
 
@@ -85,7 +90,7 @@ What it writes:
 | `docs/blueprint/spec.json` | The same content as structured data |
 | `docs/blueprint/NOTES.md` | Answers in your words, decisions with reasons, open questions |
 | `docs/blueprint/TRACKER.md` | Coverage by topic |
-| `docs/blueprint/BUILD-PLAN.md` | Ordered tasks, each about 15 to 20 minutes of agent work, in phases that end in something runnable |
+| `docs/blueprint/BUILD-PLAN.md` | Ordered tasks, each about 15 to 20 minutes of agent work, in phases that end in something runnable. Each task lists what blocks it and the seam its tests go through, which foreman and `/tdd` use. |
 | `design/BRIEF.md` | A head start for craft |
 | `docs/blueprint/KICKOFF.md` | A prompt to start a fresh build session |
 
@@ -102,12 +107,29 @@ craft designs and builds interfaces that don't look like every other generated a
 
 For a landing page told through scrolling, ask for a scroll or cinematic landing page. Generated imagery in that mode needs a `KIE_AI_API_KEY` in your environment (see `plugins/craft/.env.example`).
 
-## napkin and pager
+## proof
 
-Two always-on modes. napkin is a lazy senior architect and pager is a lazy senior DevOps engineer. Both push Claude toward the fewest moving parts that fully solve the task, and both end their replies with what was skipped and any risk you should know about.
+Two on-demand skills for proving code works.
+
+**`/tdd`** builds a feature or fix test-first, one behaviour at a time. It takes the behaviours from the SOW or the phase brief, agrees the test seams with you (or uses the seam from the build plan task), and uses the project's own test runner. Each slice is a failing test, then the least code that passes. Tests go through public interfaces, so they survive refactors. Mocks only at system boundaries like payment providers or the clock.
+
+**`/debug`** works a hard bug or performance regression through gated phases:
+1. A check that fails on this exact bug.
+2. Minimise the failing case.
+3. Three to five hypotheses, each with the observation that would prove it wrong.
+4. Instrument and get that observation.
+5. Fix the verified cause and turn the repro into a regression test.
+6. Remove every temporary probe.
+
+It says whether each diagnosis is verified or suspected and never suggests a destructive step on a guess.
+
+## trim, napkin and pager
+
+Three always-on modes. trim is a lazy senior developer, napkin a lazy senior architect and pager a lazy senior DevOps engineer. All three push Claude toward the fewest moving parts that fully solve the task. When more than one is active, they end each reply with a single combined note on what was skipped and any risk.
 
 They load at the start of every session and into every subagent, but each one's rules apply only in its area:
 
+- **trim**: application code. Reuse what the codebase, the platform and installed dependencies already do before writing anything, no abstractions or options nobody asked for, the shortest diff that finishes the job, and a small test for any non-trivial logic. `/trim-debt` lists every `shortcut:` comment in the repo, from all three modes, with its limit and upgrade trigger. `/trim-audit` audits the whole repo for bugs, security holes, load problems, untested risk, slow paths and code to delete.
 - **napkin**: system design, service boundaries, data models, datastore and framework choices, technical plans. It prefers the existing app and database, one deployable, and today's scale plus one order of magnitude. It writes down the number at which to revisit.
 - **pager**: CI/CD, Dockerfiles, deploy scripts, hosting and env config, IaC, DNS, cron, monitoring. It prefers the platform's built-in features and managed services. Every change comes with how to verify it and how to undo it. It won't deploy, destroy, migrate or change DNS on a live system without your go-ahead.
 
@@ -121,7 +143,7 @@ They load at the start of every session and into every subagent, but each one's 
 | `/napkin off` or `stop napkin` | Off for the rest of this session |
 | `/napkin default lite` | Sets the level new sessions start at |
 
-pager works the same way with `/pager`. The level is per session. State lives in `~/.claude/.napkin/` and `~/.claude/.pager/`, or under `CLAUDE_CONFIG_DIR` if you set it.
+trim and pager work the same way with `/trim` and `/pager`. The level is per session. State lives in `~/.claude/.trim/`, `~/.claude/.napkin/` and `~/.claude/.pager/`, or under `CLAUDE_CONFIG_DIR` if you set it.
 
 ## nitpick
 
@@ -133,24 +155,47 @@ A code review from an opinionated senior developer who nitpicks everything. It r
 /nitpick main..HEAD      # a ref range
 /nitpick 123             # a GitHub PR
 /nitpick src/lib/date.ts # whole files
+/nitpick --spec docs/specs/checkout.md   # name the spec yourself
 ```
 
-It checks naming and readability, function and file size, nesting, magic values, dead code, types, error handling, repetition, whether a helper already exists in the codebase, and whether new dependencies are mainstream and maintained. It looks up each new package's release history and downloads rather than guessing.
+Two reviewers run in parallel, each in a fresh subagent.
+
+**Standards.** It checks naming and readability, function and file size, nesting, magic values, dead code, types, error handling, repetition, whether a helper already exists in the codebase, and whether new dependencies are mainstream and maintained. It looks up each new package's release history and downloads rather than guessing. It also flags the classic smells from Fowler's *Refactoring* (feature envy, data clumps, primitive obsession, shotgun surgery, speculative generality and the rest) as judgement calls, unless the repo's own conventions endorse the pattern.
+
+**Spec.** It finds what the change was supposed to do: a `--spec` path, ticket references in the commits, the build plan rows and founder brief for the files touched, a spec file named after the branch, or the SOW's acceptance criteria. It asks if it finds nothing, and skips this review if there's no spec. Every requirement comes back as met, partly met, missing, extra (added beyond the spec) or contradicted, with `file:line` evidence.
 
 You get a verdict (Request changes, Approve with nits, or Approve) and findings ranked must, should and nit. Each has a `file:line` and the fix. Problems in code the diff didn't touch go in a separate, non-blocking list. It never edits files. Ask Claude to apply the findings when you want them fixed.
 
-The reviewer runs on Sonnet. Change `model` in `plugins/nitpick/agents/nitpick.md` for a heavier review.
+Both reviewers run on Sonnet. Change `model` in `plugins/nitpick/agents/` for a heavier review.
+
+## foreman
+
+foreman builds a phase of blueprint's plan with a team of agents. Run it in your main session.
+
+```
+/foreman             # the next unfinished phase
+/foreman 2           # a specific phase
+/foreman 2 --max 5   # up to 5 workers at once (default 3, fewer when memory is low)
+```
+
+Before it starts, it checks the tree is clean, the plan is runnable (every task has a "Blocked by", and tasks that can run together don't edit the same file) and finds the project's typecheck, lint and test commands. It works on your feature branch, or creates `build/<phase>` if you're on a trunk.
+
+Then it loops. Every task whose blockers are merged goes to a Sonnet worker in its own git worktree. The worker builds the task test-first through its seam, runs the checks, commits on `foreman/<task>` and reports. foreman merges each finished branch, runs the checks again, and hands any conflict or failure to an Opus integrator that keeps both tasks' intent and never weakens a test. A worker that hits a product decision finishes what it can and reports the question; foreman puts it in founder's inbox and the rest of the phase carries on.
+
+The phase ends with nitpick against the plan and brief, one fix pass, and a report: what's done, blocked or failed, the commits, the check results, assumptions to confirm, questions for you, and token spend. Progress is saved in `docs/foreman/PROGRESS.md`, so `/foreman` picks up a stopped run.
+
+foreman never pushes, opens a pull request, merges into a trunk or deploys.
 
 ## A full project, start to finish
 
 1. **`/founder vision`**. Describe the idea. The founder asks who it's for, what makes it remarkable and where it goes, and writes `VISION.md`.
 2. **blueprint takes over**. The interview fills in users, flows, data, integrations and hosting. Agree the SOW and the MVP cut.
 3. **`/craft`**. Pick a direction in the taste picker, review the prototype, iterate until it's right.
-4. **`/founder brief phase-1`**. Start a build session with the kickoff prompt and the phase brief. napkin and pager are already active.
-5. **Teams build**. Questions land in `docs/founder/QUESTIONS.md`.
-6. **`/founder questions`**. Answer what's yours and paste the update into the build session.
-7. **`/nitpick`** before each merge. Fix the musts and shoulds.
-8. Repeat 4 to 7 for each phase.
+4. **`/founder brief 1`**. A one-page brief for the phase.
+5. **`/foreman 1`**. Workers build the phase in parallel, test-first, with trim, napkin and pager active. Product questions land in `docs/founder/QUESTIONS.md` while the rest keeps moving.
+6. **`/founder questions`**. Answer what's yours. Unblocked tasks go into the next `/foreman` run.
+7. **Review the report.** foreman has already run nitpick and one fix pass. Read what's left, the assumptions and the check results, then push and open the PR yourself.
+8. Repeat 4 to 7 for each phase. Use `/debug` whenever something breaks in a way that isn't obvious.
 
 ## Updating and removing
 
@@ -160,11 +205,11 @@ The reviewer runs on Sonnet. Change `model` in `plugins/nitpick/agents/nitpick.m
 /plugin remove <plugin>
 ```
 
-Removing napkin or pager leaves their small state folders (`~/.claude/.napkin/`, `~/.claude/.pager/`). Delete them if you like.
+Removing trim, napkin or pager leaves its small state folder (`~/.claude/.trim/` and so on). Delete it if you like.
 
 ## Troubleshooting
 
 - **A command doesn't exist after install.** Restart Claude Code. Plugins load at session start.
-- **napkin or pager seems inactive.** Check that `node` runs from a non-interactive shell (`bash -c 'command -v node'`), and that you haven't turned it off this session. Run `/napkin` to switch it back on.
+- **trim, napkin or pager seems inactive.** Check that `node` runs from a non-interactive shell (`bash -c 'command -v node'`), and that you haven't turned it off this session. Run `/trim`, `/napkin` or `/pager` to switch it back on.
 - **An update didn't arrive.** Installs are cached by version. Run `/plugin marketplace update claude-skills`, then update the plugin.
-- **founder says blueprint is missing.** Install it: `/plugin install blueprint@claude-skills`.
+- **founder or foreman says blueprint is missing.** Install it: `/plugin install blueprint@claude-skills`.

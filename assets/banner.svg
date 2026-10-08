@@ -18,12 +18,15 @@
   <text x="112" y="160" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="64" font-weight="700" fill="#f4f1ea" letter-spacing="-1.5">claude-skills</text>
   <text x="114" y="196" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22" fill="#a9b1c3">A small senior team for Claude Code, by OneNomad</text>
   <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="17" fill="#c9cfdb">
-    <text x="760" y="112">/founder</text>
-    <text x="760" y="142">/blueprint</text>
-    <text x="760" y="172">/craft</text>
-    <text x="930" y="112">/napkin</text>
-    <text x="930" y="142">/pager</text>
-    <text x="930" y="172">/nitpick</text>
+    <text x="700" y="112">/founder</text>
+    <text x="700" y="142">/blueprint</text>
+    <text x="700" y="172">/craft</text>
+    <text x="850" y="112">/foreman</text>
+    <text x="850" y="142">/tdd</text>
+    <text x="850" y="172">/nitpick</text>
+    <text x="1000" y="112">/trim</text>
+    <text x="1000" y="142">/napkin</text>
+    <text x="1000" y="172">/pager</text>
   </g>
-  <rect x="760" y="196" width="300" height="2" rx="1" fill="url(#accent)" opacity="0.7"/>
+  <rect x="700" y="196" width="400" height="2" rx="1" fill="url(#accent)" opacity="0.7"/>
 </svg>
