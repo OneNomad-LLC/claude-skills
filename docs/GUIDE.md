@@ -75,6 +75,8 @@ blueprint interviews you in normal conversation until it can write a complete st
 
 Start it with `/blueprint`, or just describe an app idea. It pauses and resumes across sessions.
 
+If founder already wrote `docs/founder/VISION.md`, blueprint reads it first and confirms the purpose, success and main users from it instead of asking again. Its MVP cut stays clear of the vision's "Must not block" list. Once you agree the SOW, any questions still open move to founder's inbox, so there's one list to work from during the build.
+
 What it writes:
 
 | File | Contents |

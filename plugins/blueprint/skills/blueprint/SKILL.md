@@ -45,6 +45,12 @@ willing to say "do you need this?" The decisions stay theirs.
 - **Don't ask what you can find out.** Read the repo, the README, any linked
   site or doc, and przm memory or project notes when they exist. Say what you
   found and ask the user to confirm it.
+- **Founder's vision comes first.** If `docs/founder/VISION.md` exists, read it
+  before asking anything. Mark Purpose, Success and Users and roles as partial
+  from it, confirm them in one exchange, and dig only into what it leaves out:
+  other roles, devices, how often, measurable success. Keep the MVP cut clear of
+  its "Must not block" list. If the cut and the vision conflict, say so and let
+  the user decide.
 - **Stop when it's enough.** Every topic in the tracker is covered, deferred on
   purpose, or marked out of scope. Don't pad the interview to fill a template.
 
@@ -97,6 +103,12 @@ Formats and templates in [references/outputs.md](references/outputs.md).
 Write the SOW once the tracker is mostly covered, then show it to the user as a
 short summary (the MVP, the main flows, the stack, the open questions) with the
 file path. Revise from their comments. The SOW is done when the user says so.
+
+Open questions live in NOTES.md and the SOW while you're scoping. If the
+project uses founder (`docs/founder/` exists), then once the SOW is agreed,
+move each question still open into `docs/founder/QUESTIONS.md` as an entry with
+`From: blueprint` and `Status: open`, and leave one line in NOTES pointing
+there. From then on, new questions go to that inbox, not NOTES.
 
 ## Handoff
 

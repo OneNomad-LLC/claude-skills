@@ -12,7 +12,7 @@
       "name": "blueprint",
       "source": "./plugins/blueprint",
       "description": "Project onboarding: a natural interview with a coverage tracker that turns an app idea or an existing codebase into a full SOW, then hands off to design and build.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "keywords": [
         "planning",
         "scope",
@@ -38,7 +38,7 @@
       "name": "founder",
       "source": "./plugins/founder",
       "description": "A founder for your agent teams: turns your vision into a vision doc and ambitious phase briefs on top of blueprint's SOW, collects the teams' questions, and works through every open detail with you.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "keywords": [
         "planning",
         "vision",

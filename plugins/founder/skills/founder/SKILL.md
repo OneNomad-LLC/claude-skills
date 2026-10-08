@@ -45,7 +45,7 @@ Blueprint owns the statement of work. Founder adds three things next to it.
 | `docs/founder/QUESTIONS.md` | teams write, founder answers | The question inbox |
 | `docs/founder/briefs/<phase>.md` | founder | One brief per build phase or batch |
 
-Decisions go in blueprint's `docs/blueprint/NOTES.md`. When an answer changes scope or the technical plan, update `docs/SOW.md` and `spec.json` too. Don't keep a second decision log. Templates: [references/templates.md](references/templates.md).
+Open questions have one home at a time. While blueprint is scoping, they live in its NOTES. Once the SOW is agreed, blueprint moves the open ones into `QUESTIONS.md`, and every question after that, from the user or a team, goes there. Decisions go in blueprint's `docs/blueprint/NOTES.md`. When an answer changes scope or the technical plan, update `docs/SOW.md` and `spec.json` too. Don't keep a second decision log. Templates: [references/templates.md](references/templates.md).
 
 ## Modes
 
@@ -53,8 +53,8 @@ With no argument, read the files above, say where the project stands in a few li
 
 ### vision
 
-1. If there's no SOW yet, talk through the vision first: who it's for, what changes for them, why now, what makes it remarkable, where it goes after launch. Write `docs/founder/VISION.md`.
-2. Then hand the details to blueprint. If the blueprint skill is available, invoke it and tell it VISION.md exists, so it skips what's answered and keeps the MVP cut in line with the north star. If it isn't available, say so and ask the user to install it (`/plugin install blueprint@claude-skills`).
+1. If there's no SOW yet, talk through the vision first. Get the one line and who it's for in a sentence or two each, enough for blueprint to confirm rather than ask again. Spend the conversation on what blueprint doesn't cover: what makes it remarkable, why now, where it goes after launch, the principles, the bar, and what the MVP must not block. Leave users and roles, success measures, features and flows to blueprint. Write `docs/founder/VISION.md`.
+2. Then hand the details to blueprint. If the blueprint skill is available, invoke it. It reads VISION.md first, confirms what's there instead of asking again, and keeps the MVP cut clear of the "Must not block" list. If it isn't available, say so and ask the user to install it (`/plugin install blueprint@claude-skills`).
 3. After the SOW is agreed, read it against the vision. Flag anything in the MVP that would block the later vision, and anything that undersells it.
 
 ### brief [phase]

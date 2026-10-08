@@ -9,13 +9,13 @@
 <What it is and who it's for, in one sentence the user would say out loud.>
 
 ## Who it's for
-<The people, the moment they reach for it, what they do today instead.>
-
-## What changes for them
-<Before and after, concretely.>
+<One or two sentences. blueprint works out the full set of users and roles.>
 
 ## What makes it remarkable
-<The two or three things that would make someone tell a friend. Not features: outcomes.>
+<The two or three things that would make someone tell a friend. Not features: outcomes. Before and after, concretely.>
+
+## Why now
+<What has changed that makes this the right time.>
 
 ## Where it goes
 - Launch: <the MVP, one paragraph>
